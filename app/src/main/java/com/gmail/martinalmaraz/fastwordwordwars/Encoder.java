@@ -49,10 +49,10 @@ public class Encoder
     {
         public Node leftPtr;
         public Node rightPtr;
-        public int weight;
+        public double weight;
         public String value;
 
-        public Node(Node left, Node right, int weight, String val)
+        public Node(Node left, Node right, double weight, String val)
         {
             this.leftPtr = left;
             this.rightPtr = right;
@@ -65,7 +65,7 @@ public class Encoder
             this(left, right, weight, null);
         }
 
-        public int getWeight()
+        public double getWeight()
         {
             return this.weight;
         }
