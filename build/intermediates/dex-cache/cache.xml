@@ -2,60 +2,60 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.3.0\jars\libs\internal_impl-23.3.0.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="4da5a4d697d32497c6f85567a5112e62fdfd0676">
-        <dex dex="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.3.0_efcc33a710315f1bf6d04eb965217c350172c22f\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\kami\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.3.0\support-annotations-23.3.0.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="db7791d75a07fef9844d06236c1c59ba7bf6997c">
-        <dex dex="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-23.3.0_dce029298b17b317ba91f1db723b9d1490600df8\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.3.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="23be6993826b8fd88bbc8d14928bb3b8960d3d4e">
-        <dex dex="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.3.0_1449f8cddb8f20e6e6e46ead47de542a2508ef1a\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.3.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="a0b5d60246cd9d4f3f2443611b3b4c25265840b5">
-        <dex dex="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.3.0_023048705ae465abb6322e7912ed5b9125b0eec7\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="31edaed5ed9e5ad946357b2c36db339c2bfcb02a">
-        <dex dex="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_3f1175fde6225d192b2a4256d93b81d01e839d9e\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.3.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
-        <dex dex="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.3.0_509facf2d37a254e6f37beace36a1faeebd21296\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.3.0\jars\classes.jar"
+        jar="/home/pico/code/android/FastWordWordWars/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/classes.jar"
         jumboMode="true"
         revision="23.0.3"
         sha1="8a034dd16c0dfd75fe86c52c2cd581592acc684a">
-        <dex dex="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.3.0_1474f77813336e100a88a800e50f39ef2475343a\classes.dex" />
+        <dex dex="/home/pico/code/android/FastWordWordWars/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-23.3.0_88413f9af24ac8792b78a468d5c824b96ce81f8a/classes.dex" />
     </item>
     <item
-        jar="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="/home/pico/code/android/FastWordWordWars/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="6ca4289bd0d5fa97bce8533554882090ac811acb">
-        <dex dex="C:\Users\kami\Documents\GoogleLovesMe\Puzzle8_starter\FastWordWordWars\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_2e8be31aab7e8ad2a2a3dc1481fe154ab4315a85\classes.dex" />
+        sha1="f8828333c7d3c5d290822841de9d2906b8e5696b">
+        <dex dex="/home/pico/code/android/FastWordWordWars/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_1acac2e2348e16de5d745a9072dd1b2540645130/classes.dex" />
+    </item>
+    <item
+        jar="/home/pico/code/android/FastWordWordWars/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="23be6993826b8fd88bbc8d14928bb3b8960d3d4e">
+        <dex dex="/home/pico/code/android/FastWordWordWars/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-23.3.0_ff65cffa30e270a6d3600e8ea3eca84fdd860b59/classes.dex" />
+    </item>
+    <item
+        jar="/home/pico/code/android/FastWordWordWars/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="3fb5235f1d953f57a013e3dfadafe14a77ba0bed">
+        <dex dex="/home/pico/code/android/FastWordWordWars/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_128926ee2befb2d428d7cb67f70d3db83e5bf174/classes.dex" />
+    </item>
+    <item
+        jar="/home/pico/code/android/FastWordWordWars/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
+        <dex dex="/home/pico/code/android/FastWordWordWars/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-23.3.0_da461058f6cdbc7dbf0c03bf30e864a4e4bbc310/classes.dex" />
+    </item>
+    <item
+        jar="/home/pico/code/android/FastWordWordWars/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/libs/internal_impl-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="4da5a4d697d32497c6f85567a5112e62fdfd0676">
+        <dex dex="/home/pico/code/android/FastWordWordWars/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.3.0_b3d0b8e358a046ad668d8e3265b5dce5a40ec69a/classes.dex" />
+    </item>
+    <item
+        jar="/home/pico/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/23.3.0/support-annotations-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="db7791d75a07fef9844d06236c1c59ba7bf6997c">
+        <dex dex="/home/pico/code/android/FastWordWordWars/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-23.3.0_97e0272756882c83ede1231ebc64c917fedb27fb/classes.dex" />
+    </item>
+    <item
+        jar="/home/pico/code/android/FastWordWordWars/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="a0b5d60246cd9d4f3f2443611b3b4c25265840b5">
+        <dex dex="/home/pico/code/android/FastWordWordWars/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-23.3.0_fe7c577dc49eb093bee25f78f67fbb24dbfdb8aa/classes.dex" />
     </item>
 
 </items>
