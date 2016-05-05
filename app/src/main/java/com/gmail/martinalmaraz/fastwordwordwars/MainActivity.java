@@ -1,6 +1,7 @@
 package com.gmail.martinalmaraz.fastwordwordwars;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -43,10 +44,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void sendData()
+    public void startServer()
     {
-        //oifoewifnoeifnofinefowfnwef
-        //woifnwo
+        BluetoothSocket socket;
+
+        while(true)
+        {
+            try
+            {
+                socket =
+            }
+        }
     }
 
 
