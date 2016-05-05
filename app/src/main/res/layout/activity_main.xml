@@ -40,5 +40,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/hostGame"
         android:layout_alignParentEnd="true"
-        android:text="Instructions"/>
+        android:text="Instructions"
+        android:id="@+id/button" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button"
+        android:text="play"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/playButton"
+        android:onClick="startGame"/>
 </RelativeLayout>
