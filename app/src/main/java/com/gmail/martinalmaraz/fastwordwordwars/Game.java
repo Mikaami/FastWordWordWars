@@ -2,10 +2,12 @@ package com.gmail.martinalmaraz.fastwordwordwars;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothSocket;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -18,10 +20,29 @@ public class Game extends Activity
     BlueToothHelper helper = new BlueToothHelper(this);
     BluetoothSocket socket = ((ApplicationGlobals)this.getApplication()).getMmSocket();
     OutputStream out;
+    Encoder encoder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
+
+        //Sets up encoder. Handles it in a seperate thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                AssetManager assetManager = getAssets();
+                try {
+                    encoder = new Encoder(assetManager.open("words"));
+                }catch (IOException e)
+                {
+                    Log.d("file", "unable to open file", e);
+                }
+                if(encoder != null)
+                {
+                  Log.d("encoder", "success");
+                }
+            }
+        }).start();
     }
 
     public void sendData(View v)

@@ -1,8 +1,6 @@
 package com.gmail.martinalmaraz.fastwordwordwars;
 
 import android.util.Log;
-
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -10,7 +8,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
 /**
  * Created by kami on 5/5/2016.
