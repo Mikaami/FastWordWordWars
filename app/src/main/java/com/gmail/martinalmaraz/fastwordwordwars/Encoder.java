@@ -206,7 +206,7 @@ public class Encoder
             }
         }
 
-        return Arrays.copyOfRange(bits, 0, x-2);
+        return Arrays.copyOfRange(bits, 0, x);
     }
 
     public class CustomComparator implements Comparator<Node>

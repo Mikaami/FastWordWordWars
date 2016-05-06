@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
 
 /**
  * Created by kami on 5/4/2016.
@@ -56,21 +55,28 @@ public class Game extends Activity
 
     public void test(View view)
     {
-        String test = "testingtesting";
+
+        String test = "testing";
+        boolean[] temp = encoder.encode(test);
+        Log.d("verify", "before-> " + test);
+        Log.d("verify", "after-> " + encoder.decode(temp));
+
+
+        /*
+        String test = "a";
         Log.d("final", "before-> " + test);
         boolean[] bool = encoder.encode(test);
         byte[] toSend = encoder.toBytes(bool);
         boolean[] newBool = encoder.toBoolean(toSend);
-        if(!Arrays.equals(newBool, bool))
-        {
-            for(boolean b : newBool)
-                Log.d("verify", "newBool-> " + String.valueOf(b));
-            for(boolean b : bool)
-                Log.d("verify", "bool-> " + String.valueOf(b));
-        }
+
+        for(boolean b : newBool)
+            Log.d("verify", "newBool-> " + String.valueOf(b));
+        for(boolean b : bool)
+            Log.d("verify", "bool-> " + String.valueOf(b));
+
         String output = encoder.decode(newBool);
         Log.d("final", "after-> " + output);
-
+        */
 
         //String word = "angel";
         //bits = encoder.encode(word);
