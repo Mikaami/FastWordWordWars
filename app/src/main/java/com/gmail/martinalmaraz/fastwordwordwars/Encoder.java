@@ -125,6 +125,41 @@ public class Encoder
         return word;
     }
 
+    public byte[] toBytes(boolean[] input)
+    {
+        byte[] toReturn = new byte[input.length / 8];
+        for(int entry = 0; entry < toReturn.length; entry++)
+        {
+            for(int bit = 0; bit < 8; bit++)
+            {
+                if(input[entry * 8 + bit])
+                {
+                    toReturn[entry] |= (128>> bit);
+                }
+            }
+        }
+        return toReturn;
+    }
+
+    public boolean[] toBoolean(byte[] input)
+    {
+        boolean[] toReturn = new boolean[input.length * 8];
+
+        int j = 0;
+        for(byte b : input)
+        {
+            toReturn[j++] = ((b & 0x01) != 0);
+            toReturn[j++] = ((b & 0x02) != 0);
+            toReturn[j++] = ((b & 0x04) != 0);
+            toReturn[j++] = ((b & 0x08) != 0);
+            toReturn[j++] = ((b & 0x016) != 0);
+            toReturn[j++] = ((b & 0x032) != 0);
+            toReturn[j++] = ((b & 0x064) != 0);
+            toReturn[j++] = ((b & 0x0128) != 0);
+        }
+        return toReturn;
+    }
+
     public  boolean[] encode(String word)
     {
         char[] alpha = word.toCharArray();
