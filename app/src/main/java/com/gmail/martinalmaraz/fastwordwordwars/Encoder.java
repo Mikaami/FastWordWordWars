@@ -1,7 +1,10 @@
 package com.gmail.martinalmaraz.fastwordwordwars;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,7 +18,7 @@ public class Encoder
     public int[] arr;
     public Node root;
 
-    public Encoder(File file) throws IOException
+    public Encoder(InputStream file) throws IOException
     {
         String word;
         char[] holder;
@@ -28,7 +31,10 @@ public class Encoder
 
             for(int i = 0; i < holder.length; i++)
             {
-                arr[((int) holder[i] % 97)]++;
+                if(((int) holder[i]) % 97 <= 25)
+                {
+                    arr[(((int) holder[i]) % 97)]++;
+                }
             }
         }
         createTree();
@@ -41,16 +47,24 @@ public class Encoder
         for(int i = 0; i < arr.length; i++)
         {
             x = (char)(97 + i);
+            Log.d("encoder", "value i = " + x);
             list.add(new Node(null, null, arr[i], String.valueOf(x)));
         }
         while(list.size() > 1)
         {
             Collections.sort(list, new CustomComparator());
-            list.add(list.size(), new Node(list.get(0), list.get(1), (list.get(0).getWeight() + list.get(1).getWeight())));
+            Log.d("encoder", "List 0: " + list.get(0).getWeight());
+            Log.d("encoder", "List 1: " + list.get(1).getWeight());
+            list.add(new Node(list.get(0), list.get(1), (list.get(0).getWeight() + list.get(1).getWeight())));
             list.remove(1);
             list.remove(0);
         }
         root = list.get(0);
+    }
+
+    public void decode()
+    {
+
     }
 
     public class CustomComparator implements Comparator<Node>
