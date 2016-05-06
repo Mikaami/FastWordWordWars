@@ -166,50 +166,23 @@ public class Encoder
         Log.d("encoder", "before height");
         boolean[] bits = new boolean[root.getHeight()*word.length()];
         Log.d("encoder", "after height");
-        Node curr = root;
         int x = 0;
-        boolean flag;
-        int index;
-
-        for(int i = 0; i < alpha.length; i ++)
+        Log.d("encoder", word);
+        Log.d("encoder", "" + alpha[0]);
+        Log.d("encoder", String.valueOf(alpha[0]));
+        for(int i = 0; i < alpha.length - 1; i++)
         {
-            flag = true;
-            while(flag)
+            Log.d("encoder", "i = " + i);
+            for(int j = 0; j < keys.get(String.valueOf(alpha[i])).length(); j++)
             {
-                index = ((int) alpha[i]) % 97;
-                if(curr == null)
+                Log.d("encoder", "i = " + alpha[i] + " " + i);
+                if(keys.get(String.valueOf(alpha[i])).charAt(j) == '1')
                 {
-                    Log.d("encoder", "encode() -- curr is null");
-                    continue;
-                }
-                if(curr.isleaf())
-                {
-                   // Log.d("encoder", "is leaf " + x);
-                    //Log.d("encoder", "curr: " + curr.getValue());
-                    //Log.d("encoder", "alpha: " + alpha[i]);
-                    if(curr.getValue().equals(String.valueOf(alpha[i])))
-                    {
-                        curr = root;
-                        flag = false;
-                    }
-                    //else
-                      //  Log.d("encoder", "we shouldn't be in here");
-                }
-                else if (freq[index] > curr.getWeight())
-                {
-                    Log.d("encoder", "right");
-                    Log.d("encoder", "index = " + index);
-                    Log.d("encoder", curr.getWeight() + "|| " + freq[index]);
-                    curr = curr.rightPtr;
                     bits[x] = true;
                     x++;
                 }
                 else
                 {
-                    Log.d("encoder", "lefft");
-                    Log.d("encoder", "index = " + index);
-                    Log.d("encoder", curr.getWeight() + "|| " + freq[index]);
-                    curr = curr.leftPtr;
                     bits[x] = false;
                     x++;
                 }
