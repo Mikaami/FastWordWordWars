@@ -56,7 +56,7 @@ public class Game extends Activity
 
     public void test(View view)
     {
-        String test = "ab";
+        String test = "testingtesting";
         Log.d("final", "before-> " + test);
         boolean[] bool = encoder.encode(test);
         byte[] toSend = encoder.toBytes(bool);
