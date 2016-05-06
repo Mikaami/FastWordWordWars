@@ -6,16 +6,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * Created by kami on 5/5/2016.
  */
 public class Encoder
 {
-    public int[] arr;
+    public int[] freq;
     public Node root;
 
     public Encoder(InputStream file) throws IOException
@@ -26,7 +28,7 @@ public class Encoder
         String word;
         char[] holder;
         //It holds each character based on its position in the alphabet
-        arr = new int[26];
+        freq = new int[26];
         Scanner in = new Scanner(file);
         while(in.hasNext())
         {
@@ -37,7 +39,7 @@ public class Encoder
             {
                 if(((int) holder[i]) % 97 <= 25)
                 {
-                    arr[(((int) holder[i]) % 97)]++;    //Converts char to position in arr
+                    freq[(((int) holder[i]) % 97)]++;    //Converts char to position in arr
                 }
             }
         }
@@ -48,12 +50,12 @@ public class Encoder
     {
         ArrayList<Node> list = new ArrayList<>();
         char x;
-        for(int i = 0; i < arr.length; i++)
+        for(int i = 0; i < freq.length; i++)
         {
             //creating nodes based on their weight and values
             x = (char)(97 + i);
             Log.d("encoder", "value i = " + x);
-            list.add(new Node(null, null, arr[i], String.valueOf(x)));
+            list.add(new Node(null, null, freq[i], String.valueOf(x)));
         }
         while(list.size() > 1)
         {
@@ -71,9 +73,63 @@ public class Encoder
         root = list.get(0);
     }
 
-    public void decode()
+    public String decode(boolean[] bit)
     {
+        Node curr = root;
+        String word = "";
+        for(int i = 0; i < bit.length; i++)
+        {
 
+            if(curr.isleaf())
+            {
+                word += curr.getValue();
+                curr = root;
+                i--;
+            }
+            else if(bit[i])
+            {
+                curr = curr.rightPtr;
+            }
+            else
+                curr = curr.leftPtr;
+        }
+        return word;
+    }
+
+    public  boolean[] encode(String word)
+    {
+        char[] alpha = word.toCharArray();
+        boolean[] bits = new boolean[root.getHeight()*word.length()];
+        Node curr = root;
+        int x = 0;
+        boolean flag;
+
+        for(int i = 0; i < alpha.length; i ++)
+        {
+            flag = true;
+            while(flag)
+            {
+                if (freq[((int) alpha[i]) % 97] == curr.getWeight() && curr.getValue().equals(String.valueOf(alpha[i])))
+                {
+                    curr = root;
+                    flag = false;
+                }
+                else if (freq[((int) alpha[i]) % 97] > curr.getWeight())
+                {
+                    curr = curr.rightPtr;
+                    bits[x] = true;
+                    x++;
+                }
+                else
+                {
+                    curr = curr.leftPtr;
+                    bits[x] = false;
+                    x++;
+                }
+            }
+        }
+
+        return Arrays.copyOfRange(bits, 0, x);
     }
 
     public class CustomComparator implements Comparator<Node>
@@ -91,10 +147,10 @@ public class Encoder
     {
         public Node leftPtr;
         public Node rightPtr;
-        public double weight;
+        public int weight;
         public String value;
 
-        public Node(Node left, Node right, double weight, String val)
+        public Node(Node left, Node right, int weight, String val)
         {
             this.leftPtr = left;
             this.rightPtr = right;
@@ -102,12 +158,17 @@ public class Encoder
             this.value = val;
         }
 
-        public Node(Node left, Node right, double weight)
+        public Node(Node left, Node right, int weight)
         {
             this(left, right, weight, null);
         }
 
-        public double getWeight()
+        public boolean isleaf()
+        {
+            return (leftPtr == null) && (rightPtr == null);
+        }
+
+        public int getWeight()
         {
             return this.weight;
         }
@@ -120,6 +181,15 @@ public class Encoder
         public int compareTo(Node obj)
         {
             return Double.compare(this.getWeight(), obj.getWeight());
+        }
+        public int getHeight()
+        {
+            if(this.isleaf())
+                return 1;
+            else
+                return 1 + Math.max(this.rightPtr.getHeight(), this.leftPtr.getHeight());
+
+
         }
     }
 
