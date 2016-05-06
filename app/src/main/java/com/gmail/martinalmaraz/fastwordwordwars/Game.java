@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -50,8 +51,9 @@ public class Game extends Activity
         try
         {
             out = socket.getOutputStream();
-            out.write("testing 1 2 3".getBytes());
-            out.close();
+            EditText textView = (EditText) findViewById(R.id.sample);
+            String sending = textView.getText().toString();
+            out.write(sending.getBytes());
         }
         catch (Exception e)
         {
