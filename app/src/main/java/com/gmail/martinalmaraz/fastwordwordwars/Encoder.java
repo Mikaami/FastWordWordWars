@@ -51,15 +51,13 @@ public class Encoder
         {
             //creating nodes based on their weight and values
             x = (char)(97 + i);
-            Log.d("encoder", "value i = " + x);
+            Log.d("encoder", "value i = " + x + " " + freq[i]);
             list.add(new Node(null, null, freq[i], String.valueOf(x)));
         }
         while(list.size() > 1)
         {
             //sorts the list to account for new nodes
             Collections.sort(list, new CustomComparator());
-            Log.d("encoder", "List 0: " + list.get(0).getWeight());
-            Log.d("encoder", "List 1: " + list.get(1).getWeight());
             //Combines the two smallest nodes to create a new node with a new weight.
             list.add(new Node(list.get(0), list.get(1), (list.get(0).getWeight() + list.get(1).getWeight())));
             //Removes the first two nodes it used to create the new node.
@@ -96,29 +94,52 @@ public class Encoder
     public  boolean[] encode(String word)
     {
         char[] alpha = word.toCharArray();
+        Log.d("encoder", "before height");
         boolean[] bits = new boolean[root.getHeight()*word.length()];
+        Log.d("encoder", "after height");
         Node curr = root;
         int x = 0;
         boolean flag;
+        int index;
 
         for(int i = 0; i < alpha.length; i ++)
         {
             flag = true;
             while(flag)
             {
-                if (freq[((int) alpha[i]) % 97] == curr.getWeight() && curr.getValue().equals(String.valueOf(alpha[i])))
+                index = ((int) alpha[i]) % 97;
+                if(curr == null)
                 {
-                    curr = root;
-                    flag = false;
+                    Log.d("encoder", "encode() -- curr is null");
+                    continue;
                 }
-                else if (freq[((int) alpha[i]) % 97] > curr.getWeight())
+                if(curr.isleaf())
                 {
+                   // Log.d("encoder", "is leaf " + x);
+                    //Log.d("encoder", "curr: " + curr.getValue());
+                    //Log.d("encoder", "alpha: " + alpha[i]);
+                    if(curr.getValue().equals(String.valueOf(alpha[i])))
+                    {
+                        curr = root;
+                        flag = false;
+                    }
+                    //else
+                      //  Log.d("encoder", "we shouldn't be in here");
+                }
+                else if (freq[index] > curr.getWeight())
+                {
+                    Log.d("encoder", "right");
+                    Log.d("encoder", "index = " + index);
+                    Log.d("encoder", curr.getWeight() + "|| " + freq[index]);
                     curr = curr.rightPtr;
                     bits[x] = true;
                     x++;
                 }
                 else
                 {
+                    Log.d("encoder", "lefft");
+                    Log.d("encoder", "index = " + index);
+                    Log.d("encoder", curr.getWeight() + "|| " + freq[index]);
                     curr = curr.leftPtr;
                     bits[x] = false;
                     x++;

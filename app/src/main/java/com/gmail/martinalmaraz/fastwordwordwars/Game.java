@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
 
 /**
  * Created by kami on 5/4/2016.
@@ -25,15 +26,18 @@ public class Game extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("encoder", "wtf");
         setContentView(R.layout.game);
-
         //Sets up encoder. Handles it in a seperate thread
+        Log.d("encoder", "before");
         new Thread(new Runnable() {
             @Override
             public void run() {
                 AssetManager assetManager = getAssets();
                 try {
+                    Log.d("encoder", "start");
                     encoder = new Encoder(assetManager.open("words"));
+                    Log.d("encoder", "end");
                 }catch (IOException e)
                 {
                     Log.d("file", "unable to open file", e);
@@ -42,8 +46,23 @@ public class Game extends Activity
                 {
                   Log.d("encoder", "success");
                 }
+                else
+                    Log.d("encoder", "is null");
             }
         }).start();
+        Log.d("encoder", "after");
+
+    }
+
+    public void test(View view)
+    {
+        boolean[] bits;
+        String word = "angel";
+        bits = encoder.encode(word);
+        Log.d("encoder", encoder.decode(bits));
+        word = "martin";
+        bits = encoder.encode(word);
+        Log.d("encoder", encoder.decode(bits));
     }
 
     public void sendData(View v)
