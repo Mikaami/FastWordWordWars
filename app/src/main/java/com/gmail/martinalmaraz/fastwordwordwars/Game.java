@@ -19,18 +19,24 @@ public class Game extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
 
-        //Sets up encoder
-        AssetManager assetManager = getAssets();
-        try {
-            encoder = new Encoder(assetManager.open("words"));
-        }catch (IOException e)
-        {
-            Log.d("file", "unable to open file", e);
-        }
-        if(encoder != null)
-        {
-            Log.d("encoder", "success");
-        }
+        //Sets up encoder. Handles it in a seperate thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                AssetManager assetManager = getAssets();
+                try {
+                    encoder = new Encoder(assetManager.open("words"));
+                }catch (IOException e)
+                {
+                    Log.d("file", "unable to open file", e);
+                }
+                if(encoder != null)
+                {
+                    Log.d("encoder", "success");
+                }
+            }
+        }).start();
+
     }
 
 }
