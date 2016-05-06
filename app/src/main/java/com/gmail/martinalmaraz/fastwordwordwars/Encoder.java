@@ -1,12 +1,16 @@
 package com.gmail.martinalmaraz.fastwordwordwars;
 
 import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -16,6 +20,7 @@ public class Encoder
 {
     public int[] freq;
     public Node root;
+    public HashMap<String, String> keys;
 
     public Encoder(InputStream file) throws IOException
     {
@@ -41,6 +46,35 @@ public class Encoder
             }
         }
         createTree();
+        keys = new HashMap<>();
+        buildKeySet(root, keys, "");
+        printTree();
+    }
+
+    public void printTree()
+    {
+        Iterator it = keys.entrySet().iterator();
+        while(it.hasNext())
+        {
+            Map.Entry pair = (Map.Entry)it.next();
+            Log.d("map", "key: " + pair.getKey() + ", value: " + pair.getValue());
+            it.remove();
+        }
+    }
+
+
+    public void buildKeySet(Node node, HashMap<String, String> map, String s)
+    {
+        if(node == null)
+            return;
+        if(node.isleaf())
+        {
+            if(node.getValue() != null)
+                map.put(node.getValue(), s);
+            return;
+        }
+        buildKeySet(node.leftPtr, map, s + '0');
+        buildKeySet(node.rightPtr, map, s + '1');
     }
 
     public void createTree()

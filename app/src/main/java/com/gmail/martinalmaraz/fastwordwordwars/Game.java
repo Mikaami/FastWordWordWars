@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
 
 /**
  * Created by kami on 5/4/2016.
@@ -69,10 +68,15 @@ public class Game extends Activity
     {
         try
         {
+            Log.d("string1", "test");
             out = socket.getOutputStream();
+            Log.d("string1", "test");
             EditText textView = (EditText) findViewById(R.id.sample);
+            Log.d("string1", "test");
             String sending = textView.getText().toString();
-            out.write(sending.getBytes());
+            Log.d("string1", sending.getBytes("UTF-8").toString());
+            Log.d("string1", sending);
+            out.write(sending.getBytes("UTF-8"));
         }
         catch (Exception e)
         {
