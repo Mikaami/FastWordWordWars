@@ -11,8 +11,6 @@ import android.util.Log;
 import android.view.View;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
@@ -108,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    // HOST BUTTON READ
     public class AcceptThread extends Thread {
         private final BluetoothServerSocket mmServerSocket;
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -141,7 +139,17 @@ public class MainActivity extends AppCompatActivity {
 
                     if(socket.isConnected())
                         Log.d("test", "connected! Accept Thread");
-                    startGame(socket);
+                    try{
+                        mmServerSocket.close();
+                        startGameRead(socket);
+                        //return socket;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d("conn", "failed to close server socket");
+                    }
+
+                    //
                     try
                     {
                         //manageConnection manageconnectino = new manageConnection(socket);
@@ -166,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    // client side JOIN BUTTON
     public class ConnectThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;
@@ -198,7 +206,10 @@ public class MainActivity extends AppCompatActivity {
                 mmSocket.connect();
 
                 if(mmSocket.isConnected())
+                {
                     Log.d("test", "connected! Connect Thread");
+                }
+
             } catch (IOException connectException) {
                 // Unable to connect; close the socket and get out
                 try {
@@ -210,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Do work to manage the connection (in a separate thread)
             Log.d("test", "starting game connect thread");
-            startGame(mmSocket);
+            startGameWrite(mmSocket);
 
         }
 
@@ -222,9 +233,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void startGame(final BluetoothSocket mmSocket)
+    // HOST BUTTON ACCEPT THREAD
+    public void startGameRead(final BluetoothSocket mmSocket)
     {
         Intent intent = new Intent(this, Game.class);
+        ((ApplicationGlobals)this.getApplication()).setMmSocket(mmSocket);
+
+        /*
         new Thread(new Runnable()
         {
             public void run()
@@ -238,6 +253,31 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }).run();
+        */
+        startActivity(intent);
+    }
+
+    // CONNECT THREAD BY JOIN BUTTON
+    public void startGameWrite(final BluetoothSocket mmSocket)
+    {
+        Intent intent = new Intent(this, Game.class);
+        ((ApplicationGlobals)this.getApplication()).setMmSocket(mmSocket);
+        /*
+        new Thread(new Runnable()
+        {
+            public void run()
+            {
+                manageConnection manageconnection = new manageConnection(mmSocket);
+                Log.d("b", "7");
+                //manageconnection.run();
+                Log.d("b", "8");
+                manageconnection.write("testing".getBytes());
+                Log.d("conn b", "testing".getBytes().toString());
+                Log.d("b", "9");
+            }
+
+        }).run();
+        */
         startActivity(intent);
     }
 
@@ -248,85 +288,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public class manageConnection extends Thread
-    {
-        private final BluetoothSocket socket;
-        private final InputStream inputStream;
-        private final OutputStream outputStream;
 
-        public manageConnection(BluetoothSocket s)
-        {
-            socket = s;
-            InputStream tmpI = null;
-            OutputStream tmpO = null;
-
-            try
-            {
-                tmpI = s.getInputStream();
-                tmpO = s.getOutputStream();
-                Log.d("b", "5");
-            }
-            catch (Exception e)
-            {
-                Log.d("conn", "failed to open socket");
-            }
-
-            inputStream = tmpI;
-            outputStream = tmpO;
-        }
-
-        public void run()
-        {
-            byte[] buff = new byte[1024];
-            int bytes;
-
-            while(true)
-            {
-                Log.d("b", "hereee");
-                try
-                {
-                    Log.d("b", "here?");
-                    bytes = inputStream.read(buff);
-                    Log.d("b", "2");
-                    Log.d("conn", Integer.toString(bytes));
-                    Log.d("b", "3");
-                }
-                catch (Exception e)
-                {
-                    Log.d("b", "4");
-                    break;
-                }
-            }
-        }
-
-        public void write(byte[] bytes)
-        {
-            try
-            {
-                Log.d("b", "1");
-                outputStream.write(bytes);
-            }
-            catch (Exception e)
-            {
-                Log.d("conn", "failed write");
-            }
-        }
-
-        public void cancel()
-        {
-            try
-            {
-                socket.close();
-            }
-            catch (Exception e)
-            {
-                Log.d("conn", "failed to close");
-            }
-        }
-
-
-
-    }
 }
 
 
