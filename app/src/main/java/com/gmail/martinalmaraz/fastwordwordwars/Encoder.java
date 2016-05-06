@@ -173,10 +173,12 @@ public class Encoder
             toReturn[j++] = ((b & 0x02) != 0);
             toReturn[j++] = ((b & 0x04) != 0);
             toReturn[j++] = ((b & 0x08) != 0);
-            toReturn[j++] = ((b & 0x016) != 0);
-            toReturn[j++] = ((b & 0x032) != 0);
-            toReturn[j++] = ((b & 0x064) != 0);
-            toReturn[j++] = ((b & 0x0128) != 0);
+
+            toReturn[j++] = ((b & (0x10)) != 0);
+            toReturn[j++] = ((b & (0x20)) != 0);
+            toReturn[j++] = ((b & (0x40)) != 0);
+            toReturn[j++] = ((b & (0x80)) != 0);
+
         }
         return toReturn;
     }
@@ -199,41 +201,12 @@ public class Encoder
             {
                 if(v == '1')
                     bits[x++] = true;
-                else
+                else if(v == '0')
                     bits[x++] = false;
             }
         }
 
-
-
-
-        /*
-        Log.d("encoder", "after height");
-        int x = 0;
-        Log.d("encoder", word);
-        Log.d("encoder", "" + alpha[0]);
-        Log.d("encoder", String.valueOf(alpha[0]));
-        for(int i = 0; i < alpha.length; i++)
-        {
-            Log.d("encoder", "i = " + i);
-            for(int j = 0; j < keys.get(String.valueOf(alpha[i])).length(); j++)
-            {
-                Log.d("encoder", "i = " + alpha[i] + " " + i);
-                if(keys.get(String.valueOf(alpha[i])).charAt(j) == '1')
-                {
-                    bits[x] = true;
-                    x++;
-                }
-                else
-                {
-                    bits[x] = false;
-                    x++;
-                }
-            }
-        }
-        */
-
-        return Arrays.copyOfRange(bits, 0, x);
+        return Arrays.copyOfRange(bits, 0, x-2);
     }
 
     public class CustomComparator implements Comparator<Node>
