@@ -3,6 +3,8 @@ package com.gmail.martinalmaraz.fastwordwordwars;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 /**
@@ -11,6 +13,7 @@ import java.util.Scanner;
 public class Encoder
 {
     public int[] arr;
+    public Node root;
 
     public Encoder(File file) throws IOException
     {
@@ -35,13 +38,28 @@ public class Encoder
     {
         ArrayList<Node> list = new ArrayList<>();
         char x;
-        String y;
         for(int i = 0; i < arr.length; i++)
         {
             x = (char)(97 + i);
             list.add(new Node(null, null, arr[i], String.valueOf(x)));
         }
+        while(list.size() > 1)
+        {
+            Collections.sort(list, new CustomComparator());
+            list.add(list.size(), new Node(list.get(0), list.get(1), (list.get(0).getWeight() + list.get(1).getWeight())));
+            list.remove(1);
+            list.remove(0);
+        }
+        root = list.get(0);
+    }
 
+    public class CustomComparator implements Comparator<Node>
+    {
+        @Override
+        public  int compare(Node obj1, Node obj2)
+        {
+            return  obj1.compareTo(obj2);
+        }
     }
 
 
@@ -60,7 +78,7 @@ public class Encoder
             this.value = val;
         }
 
-        public Node(Node left, Node right, int weight)
+        public Node(Node left, Node right, double weight)
         {
             this(left, right, weight, null);
         }
@@ -73,7 +91,15 @@ public class Encoder
         {
             return  this.value;
         }
+
+        //compareTo will return true if it is greater than the obj it is being compared to
+        public int compareTo(Node obj)
+        {
+            return Double.compare(this.getWeight(), obj.getWeight());
+        }
     }
+
+
 
 
 }
