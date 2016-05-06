@@ -55,13 +55,20 @@ public class Game extends Activity
 
     public void test(View view)
     {
-        boolean[] bits;
-        String word = "angel";
-        bits = encoder.encode(word);
-        Log.d("encoder", encoder.decode(bits));
-        word = "martin";
-        bits = encoder.encode(word);
-        Log.d("encoder", encoder.decode(bits));
+        //boolean[] bits;
+        boolean[] test = {true, false, true, false, true, false, true, false};
+        byte[] after = encoder.toBytes(test);
+        boolean[] converted = encoder.encode("angelsucks"); // 1101 101111
+        for(boolean b : converted)
+            Log.d("converter", Boolean.toString(b));
+        Log.d("converter", "after-> " + encoder.decode(converted));
+
+        //String word = "angel";
+        //bits = encoder.encode(word);
+        //Log.d("encoder", encoder.decode(bits));
+        //word = "martin";
+        //bits = encoder.encode(word);
+        //Log.d("encoder", encoder.decode(bits));
     }
 
     public void sendData(View v)

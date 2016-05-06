@@ -20,7 +20,7 @@ public class Encoder
 {
     public int[] freq;
     public Node root;
-    public HashMap<String, String> keys;
+    public HashMap<String, String> keys = new HashMap<>();
 
     public Encoder(InputStream file) throws IOException
     {
@@ -46,8 +46,7 @@ public class Encoder
             }
         }
         createTree();
-        keys = new HashMap<>();
-        buildKeySet(root, keys, "");
+        buildKeySet(root, "");
         printTree();
     }
 
@@ -58,23 +57,23 @@ public class Encoder
         {
             Map.Entry pair = (Map.Entry)it.next();
             Log.d("map", "key: " + pair.getKey() + ", value: " + pair.getValue());
-            it.remove();
+            //it.remove();
         }
     }
 
 
-    public void buildKeySet(Node node, HashMap<String, String> map, String s)
+    public void buildKeySet(Node node, String s)
     {
         if(node == null)
             return;
         if(node.isleaf())
         {
             if(node.getValue() != null)
-                map.put(node.getValue(), s);
+                keys.put(node.getValue(), s);
             return;
         }
-        buildKeySet(node.leftPtr, map, s + '0');
-        buildKeySet(node.rightPtr, map, s + '1');
+        buildKeySet(node.leftPtr,  s + "0");
+        buildKeySet(node.rightPtr, s + "1");
     }
 
     public void createTree()
@@ -106,21 +105,43 @@ public class Encoder
     {
         Node curr = root;
         String word = "";
+        for(boolean b : bit)
+            Log.d("fucked", String.valueOf(b));
         for(int i = 0; i < bit.length; i++)
         {
-
+            Log.d("decode", "valueCurr: " + curr.getValue());
             if(curr.isleaf())
             {
+                Log.d("decode", "was leaf -> " + curr.getValue());
                 word += curr.getValue();
                 curr = root;
-                i--;
+                //i--;
             }
             else if(bit[i])
             {
+                Log.d("decode", "went right");
                 curr = curr.rightPtr;
+                if(curr.isleaf())
+                {
+                    Log.d("decode", "was leaf -> " + curr.getValue());
+                    word += curr.getValue();
+                    curr = root;
+                    //i--;
+                }
             }
             else
+            {
+                Log.d("decode", "went left");
                 curr = curr.leftPtr;
+                if(curr.isleaf())
+                {
+                    Log.d("decode", "was leaf -> " + curr.getValue());
+                    word += curr.getValue();
+                    curr = root;
+                    //i--;
+                }
+            }
+
         }
         return word;
     }
@@ -165,12 +186,34 @@ public class Encoder
         char[] alpha = word.toCharArray();
         Log.d("encoder", "before height");
         boolean[] bits = new boolean[root.getHeight()*word.length()];
+        int x = 0;
+
+        for(char c : alpha)
+        {
+            String values = keys.get(String.valueOf(c));
+            Log.d("convert", String.valueOf(c));
+            Log.d("convert", Integer.toString(keys.size()));
+            if(values == null)
+                Log.d("convert", "was null");
+            for(char v : values.toCharArray())
+            {
+                if(v == '1')
+                    bits[x++] = true;
+                else
+                    bits[x++] = false;
+            }
+        }
+
+
+
+
+        /*
         Log.d("encoder", "after height");
         int x = 0;
         Log.d("encoder", word);
         Log.d("encoder", "" + alpha[0]);
         Log.d("encoder", String.valueOf(alpha[0]));
-        for(int i = 0; i < alpha.length - 1; i++)
+        for(int i = 0; i < alpha.length; i++)
         {
             Log.d("encoder", "i = " + i);
             for(int j = 0; j < keys.get(String.valueOf(alpha[i])).length(); j++)
@@ -188,6 +231,7 @@ public class Encoder
                 }
             }
         }
+        */
 
         return Arrays.copyOfRange(bits, 0, x);
     }
