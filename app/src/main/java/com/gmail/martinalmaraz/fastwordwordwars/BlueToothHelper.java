@@ -115,6 +115,8 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
                 game.startTimer();
                 cont = false;
                 String temp = textView.getText().toString();
+                textView.setText("");
+                ((EditText)parent.findViewById(R.id.TextField)).setText("");
                 if(temp.length() > 0)
                 {
                     boolean[] t = new boolean[temp.length()];

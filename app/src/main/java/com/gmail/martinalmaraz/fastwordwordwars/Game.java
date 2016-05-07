@@ -3,7 +3,6 @@ package com.gmail.martinalmaraz.fastwordwordwars;
 import android.app.Activity;
 import android.bluetooth.BluetoothSocket;
 import android.content.res.AssetManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashSet;
+import java.util.Random;
 
 /**
  * Created by kami on 5/4/2016.
@@ -42,6 +42,7 @@ public class Game extends Activity
         super.onCreate(savedInstanceState);
         Log.d("encoder", "wtf");
         setContentView(R.layout.game);
+
 
         //Sets up encoder. Handles it in a seperate thread
         Log.d("encoder", "before");
@@ -141,13 +142,20 @@ public class Game extends Activity
             EditText textView = (EditText) findViewById(R.id.TextField);
             Log.d("string1", "test");
             String sending = textView.getText().toString();
+            char recent;
+            TextView textview  = (TextView)findViewById(R.id.Recent);
+            recent = (char)textview.getText().toString().charAt(textview.getText().toString().length() - 1);
+            Log.d("recent", Character.toString(recent));
+            Log.d("recent", textview.getText().toString());
 
             // check if that is a legal word //
-            if(!dic.isWord(sending) || used.contains(sending))
+            if(!dic.isWord(sending) || used.contains(sending) || (sending.charAt(0) != recent))
             {
-                ((EditText) findViewById(R.id.TextField)).setHighlightColor(Color.RED);
+                ((EditText) findViewById(R.id.TextField)).setBackgroundColor(0xFF0000);
                 return;
             }
+
+
             else
             {
                 // can deal damage
@@ -172,6 +180,7 @@ public class Game extends Activity
             out.write(outSend.getBytes());
             sendData(END_TURN);
             disableButtons();
+            ((EditText)findViewById(R.id.TextField)).setText("");
             //out.write("-1".getBytes()); // send -1 to stop
         }
         catch (Exception e)
@@ -307,6 +316,8 @@ public class Game extends Activity
                     {
                         startTimer();
                         enableButtons();
+                        char starting = (char)(new Random().nextInt(26) + 97);
+                        ((TextView)findViewById(R.id.Recent)).setText(String.valueOf(starting));
                     }
                 }
             });
