@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -40,8 +42,8 @@ public class Game extends Activity
 
         //Sets up encoder. Handles it in a seperate thread
         Log.d("encoder", "before");
-        health = 100;
-        enemyHealth = 100;
+        health = 10;
+        enemyHealth = 10;
 
         TextView textView = (TextView)findViewById(R.id.EnemyHealthNum);
         textView.setText(Integer.toString(enemyHealth));
@@ -202,6 +204,7 @@ public class Game extends Activity
         TextView enemy = (TextView) findViewById(R.id.EnemyHealthNum);
         enemyHealth -= word.length();
         enemy.setText(Integer.toString(enemyHealth));
+        checkStatus();
 
     }
 
@@ -210,6 +213,7 @@ public class Game extends Activity
         TextView player = (TextView) findViewById(R.id.PlayerHealthNum);
         health -= word.length();
         player.setText(Integer.toString(health));
+        checkStatus();
 
     }
 
@@ -258,5 +262,20 @@ public class Game extends Activity
         textView = (TextView)findViewById(R.id.TextField);
         textView.setHint(encoder.decode(temp));
         takeDamage(encoder.decode(temp));
+    }
+    public void checkStatus()
+    {
+        if(health <= 0)
+        {
+            //player loses
+            TextView view = (TextView) findViewById(R.id.time);
+            view.setText("You Lose");
+        }
+        else if(enemyHealth <= 0)
+        {
+            //player wins
+            TextView view = (TextView) findViewById(R.id.time);
+            view.setText("You Win!!");
+        }
     }
 }
