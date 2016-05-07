@@ -193,7 +193,7 @@ public class Game extends Activity
     }
     public void dealDamage(String word)
     {
-        TextView enemy = (TextView) findViewById(R.id.textView2);
+        TextView enemy = (TextView) findViewById(R.id.textView);
         enemyHealth -= word.length();
         enemy.setText("Enemy Health: " + enemyHealth);
 
