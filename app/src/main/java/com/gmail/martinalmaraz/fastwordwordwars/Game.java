@@ -45,8 +45,8 @@ public class Game extends Activity
 
         //Sets up encoder. Handles it in a seperate thread
         Log.d("encoder", "before");
-        health = 10;
-        enemyHealth = 10;
+        health = 100;
+        enemyHealth = 100;
 
         TextView textView = (TextView)findViewById(R.id.EnemyHealthNum);
         textView.setText(Integer.toString(enemyHealth));
@@ -72,7 +72,7 @@ public class Game extends Activity
         if((int)getIntent().getExtras().get("turn") == SENDING)
         {
             isTurn = true;
-            enableButtons();
+            //enableButtons();
             //startTimer();
         }
 
@@ -108,7 +108,11 @@ public class Game extends Activity
     public void sendData(String code)
     {
         if(timer != null)
+        {
             timer.cancel();
+            //timer.start();
+        }
+
         try
         {
             out = socket.getOutputStream();
@@ -121,10 +125,14 @@ public class Game extends Activity
         }
     }
 
-    public void sendData(View v)
+    public void stopTimer()
     {
         if(timer != null)
             timer.cancel();
+    }
+
+    public void sendData(View v)
+    {
         try
         {
             Log.d("string1", "test");
@@ -145,6 +153,8 @@ public class Game extends Activity
                 // can deal damage
                 dealDamage(sending);
                 used.add(sending);
+                if(timer != null)
+                    timer.cancel();
             }
 
 

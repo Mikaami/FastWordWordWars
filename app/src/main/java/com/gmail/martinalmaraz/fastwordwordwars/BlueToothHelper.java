@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -111,6 +112,7 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
                 // other stuff
                 Log.d("info", "was 50, stopped");
                 game.enableButtons();
+                game.startTimer();
                 cont = false;
                 String temp = textView.getText().toString();
                 if(temp.length() > 0)
@@ -134,10 +136,15 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
                     textView = (TextView) parent.findViewById(R.id.testing);
                     Log.d("HELP", textView.getText().toString());
                     textView.setText(""); // set binary textview to empty
-
+                    game.stopTimer();
                     textView = (TextView)parent.findViewById(R.id.Recent);
-                    game.takeDamage(textView.getText().toString());
                     game.startTimer();
+                    game.takeDamage(textView.getText().toString());
+
+                    String newWord = textView.getText().toString();
+
+                    EditText editText = (EditText)parent.findViewById(R.id.TextField);
+                    editText.setHint(String.valueOf(newWord.charAt(newWord.length() - 1)));
 
                     //textView = (TextView) parent.findViewById(R.id.TextField);
                 }
