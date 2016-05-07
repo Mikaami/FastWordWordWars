@@ -193,12 +193,18 @@ public class Game extends Activity
     }
     public void dealDamage(String word)
     {
+        TextView enemy = (TextView) findViewById(R.id.textView2);
         enemyHealth -= word.length();
+        enemy.setText("Enemy Health: " + enemyHealth);
+
     }
 
     public void takeDamage(String word)
     {
+        TextView player = (TextView) findViewById(R.id.textView2);
         health -= word.length();
+        player.setText("Health: " + health);
+
     }
 
     public void startTimer()
