@@ -41,7 +41,8 @@
         android:layout_below="@+id/hostGame"
         android:layout_alignParentEnd="true"
         android:text="Instructions"
-        android:id="@+id/button" />
+        android:id="@+id/button"
+        android:onClick="instructions"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

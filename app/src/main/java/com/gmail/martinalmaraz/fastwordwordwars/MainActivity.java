@@ -56,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void instructions(View v)
+    {
+        Intent intent = new Intent(this, Instructions.class);
+        startActivity(intent);
+    }
+
     public void joinGame(View v)
     {
         Set<BluetoothDevice> devices = myBlueTooth.getBondedDevices();

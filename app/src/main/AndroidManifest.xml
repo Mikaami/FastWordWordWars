@@ -24,6 +24,8 @@
             >
             
         </activity>
+        <activity android:name=".Instructions"
+            android:parentActivityName=".MainActivity"></activity>
 
     </application>
 
