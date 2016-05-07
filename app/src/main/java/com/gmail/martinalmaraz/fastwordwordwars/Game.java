@@ -43,10 +43,10 @@ public class Game extends Activity
         health = 100;
         enemyHealth = 100;
 
-        TextView textView = (TextView)findViewById(R.id.textView);
-        textView.setText("Enemy Health: " + enemyHealth);
-        textView = (TextView)findViewById(R.id.textView2);
-        textView.setText("Health: " + health);
+        TextView textView = (TextView)findViewById(R.id.EnemyHealthNum);
+        textView.setText(Integer.toString(enemyHealth));
+        textView = (TextView)findViewById(R.id.PlayerHealthNum);
+        textView.setText(Integer.toString(health));
         disableButtons();
         try {
             Log.d("encoder", "start fastDic");
@@ -103,20 +103,20 @@ public class Game extends Activity
     public void disableButtons()
     {
         ((Button)findViewById(R.id.send)).setEnabled(false);
-        ((Button)findViewById(R.id.fix)).setEnabled(false);
-        ((EditText)findViewById(R.id.sample)).setEnabled(false);
+        //((Button)findViewById(R.id.fix)).setEnabled(false);
+        ((EditText)findViewById(R.id.TextField)).setEnabled(false);
     }
 
     public void enableButtons()
     {
         ((Button)findViewById(R.id.send)).setEnabled(true);
-        ((Button)findViewById(R.id.fix)).setEnabled(true);
-        ((EditText)findViewById(R.id.sample)).setEnabled(true);
+        //((Button)findViewById(R.id.fix)).setEnabled(true);
+        ((EditText)findViewById(R.id.TextField)).setEnabled(true);
     }
 
     public void clearText()
     {
-        ((TextView)findViewById(R.id.sample)).setText("");
+        ((TextView)findViewById(R.id.TextField)).setText("");
     }
 
     public void sendData(String code)
@@ -140,14 +140,14 @@ public class Game extends Activity
             Log.d("string1", "test");
             out = socket.getOutputStream();
             Log.d("string1", "test");
-            EditText textView = (EditText) findViewById(R.id.sample);
+            EditText textView = (EditText) findViewById(R.id.TextField);
             Log.d("string1", "test");
             String sending = textView.getText().toString();
 
             // check if that is a legal word //
             if(!dic.isWord(sending))
             {
-                ((EditText) findViewById(R.id.sample)).setHighlightColor(Color.RED);
+                ((EditText) findViewById(R.id.TextField)).setHighlightColor(Color.RED);
                 return;
             }
             else
@@ -199,17 +199,17 @@ public class Game extends Activity
     }
     public void dealDamage(String word)
     {
-        TextView enemy = (TextView) findViewById(R.id.textView);
+        TextView enemy = (TextView) findViewById(R.id.EnemyHealthNum);
         enemyHealth -= word.length();
-        enemy.setText("Enemy Health: " + enemyHealth);
+        enemy.setText(Integer.toString(enemyHealth));
 
     }
 
     public void takeDamage(String word)
     {
-        TextView player = (TextView) findViewById(R.id.textView2);
+        TextView player = (TextView) findViewById(R.id.PlayerHealthNum);
         health -= word.length();
-        player.setText("Health: " + health);
+        player.setText(Integer.toString(health));
 
     }
 
@@ -255,7 +255,7 @@ public class Game extends Activity
 
         Log.d("fix", encoder.decode(temp));
         textView.setText("");
-        textView = (TextView)findViewById(R.id.sample);
+        textView = (TextView)findViewById(R.id.TextField);
         textView.setHint(encoder.decode(temp));
         takeDamage(encoder.decode(temp));
     }
