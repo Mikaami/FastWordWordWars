@@ -238,22 +238,9 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, Game.class);
         ((ApplicationGlobals)this.getApplication()).setMmSocket(mmSocket);
-
-        /*
-        new Thread(new Runnable()
-        {
-            public void run()
-            {
-                manageConnection manageconnection = new manageConnection(mmSocket);
-                Log.d("b", "7");
-                manageconnection.run();
-                Log.d("b", "8");
-                manageconnection.write("testing".getBytes());
-                Log.d("b", "9");
-            }
-
-        }).run();
-        */
+        Bundle bundle = new Bundle();
+        bundle.putInt("turn", 1); // host has first turn
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
@@ -262,22 +249,9 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, Game.class);
         ((ApplicationGlobals)this.getApplication()).setMmSocket(mmSocket);
-        /*
-        new Thread(new Runnable()
-        {
-            public void run()
-            {
-                manageConnection manageconnection = new manageConnection(mmSocket);
-                Log.d("b", "7");
-                //manageconnection.run();
-                Log.d("b", "8");
-                manageconnection.write("testing".getBytes());
-                Log.d("conn b", "testing".getBytes().toString());
-                Log.d("b", "9");
-            }
-
-        }).run();
-        */
+        Bundle bundle = new Bundle();
+        bundle.putInt("turn", 2);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

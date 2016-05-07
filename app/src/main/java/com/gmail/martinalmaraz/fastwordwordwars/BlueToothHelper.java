@@ -24,11 +24,14 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
     private OutputStream out;
     private boolean isRunning;
 
+
     public BlueToothHelper(Activity activity)
     {
         mmSocket = ((ApplicationGlobals)activity.getApplication()).getMmSocket();
         //btManager = new manageConnection(mmSocket);
         parent = activity;
+        //this.encoder = ((ApplicationGlobals) activity.getApplication()).getEncoder();
+
     }
 
     public boolean status()
@@ -48,12 +51,13 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
             byte[] buffer = new byte[BUFFER_SIZE];
 
             int read = 0;
-            read = in.read(buffer, read, BUFFER_SIZE - read);
+            read = in.read();
             isRunning = true;
             while (read != -1)
             {
                 publishProgress(read);
-                read = in.read(buffer, read, BUFFER_SIZE - read);
+                read = in.read();
+                Log.d("inputstream", String.valueOf((char)read));
             }
         }
         catch (Exception e)
@@ -72,6 +76,7 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
         {
             mmSocket.close();
             isRunning = false;
+            Log.d("closing", "closed");
         }
         catch (Exception e)
         {
@@ -84,14 +89,32 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
         TextView textView = (TextView) parent.findViewById(R.id.testing);
         String out = "";
         try{
-            out = new String(toByteArray(progress), "UTF-8");
+            if(String.valueOf(Integer.toString(progress[0])).equals("49"))
+                out += "1";
+            else
+                out += "0";
+            Log.d("update", String.valueOf(Integer.toString(progress[0])));
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
         Log.d("string", out );
+
+        boolean[] temp = new boolean[out.length()];
+
+        int i = 0;
+        for(char c : out.toCharArray())
+        {
+            if(c == '1')
+                temp[i++] = true;
+            else
+                temp[i++] = false;
+        }
+        out = textView.getText() + out;
         textView.setText(out);
+        Log.d("codec", "out-> " + out);
+
     }
 
     public byte[] toByteArray(Integer[] data)

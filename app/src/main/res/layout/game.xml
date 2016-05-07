@@ -41,14 +41,6 @@
         android:layout_marginTop="28dp"
         android:layout_below="@+id/textView2"
         android:layout_toEndOf="@+id/testing" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:onClick="test"
-        android:id="@+id/button2"
-        android:layout_alignBottom="@+id/sample"
-        android:layout_toEndOf="@+id/sample" />
 
     <Button
         android:layout_width="wrap_content"
@@ -56,19 +48,20 @@
         android:text="send"
         android:onClick="sendData"
         android:id="@+id/button4"
-        android:layout_alignTop="@+id/button3"
-        android:layout_alignParentStart="true" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recieve"
-        android:onClick="receiveData"
-        android:id="@+id/button3"
-        android:layout_below="@+id/sample"
-        android:layout_alignEnd="@+id/textView"
-        android:layout_marginTop="51dp" />
+        android:layout_above="@+id/button3"
+        android:layout_toEndOf="@+id/sample" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/testing"/>
-</>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="fix"
+        android:onClick="fixString"
+        android:id="@+id/button3"
+        android:layout_below="@+id/sample"
+        android:layout_toEndOf="@+id/time"
+        android:layout_marginTop="47dp" />
+</RelativeLayout>

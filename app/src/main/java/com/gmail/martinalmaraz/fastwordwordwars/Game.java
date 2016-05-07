@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.lang.Object;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -21,9 +20,10 @@ public class Game extends Activity
 {
     private final int SENDING = 1;
     private final int RECIEVING = 2;
+    private boolean isTurn = false;
+    BlueToothHelper helper = new BlueToothHelper(this);
     public int health;
     public int enemyHealth;
-    BlueToothHelper helper = new BlueToothHelper(this);
     BluetoothSocket socket = ((ApplicationGlobals)this.getApplication()).getMmSocket();
     OutputStream out;
     Encoder encoder;
@@ -32,6 +32,17 @@ public class Game extends Activity
         super.onCreate(savedInstanceState);
         Log.d("encoder", "wtf");
         setContentView(R.layout.game);
+
+        if((int)getIntent().getExtras().get("turn") == SENDING)
+        {
+            isTurn = true;
+        }
+
+        else if((int)getIntent().getExtras().get("turn") == RECIEVING)
+        {
+            isTurn = false;
+        }
+
         //Sets up encoder. Handles it in a seperate thread
         Log.d("encoder", "before");
         health = 100;
@@ -58,40 +69,7 @@ public class Game extends Activity
         }).start();
         Log.d("encoder", "after");
         startTimer();
-
-    }
-
-    public void test(View view)
-    {
-
-        String test = "testing";
-        boolean[] temp = encoder.encode(test);
-        Log.d("verify", "before-> " + test);
-        Log.d("verify", "after-> " + encoder.decode(temp));
-
-
-        /*
-        String test = "a";
-        Log.d("final", "before-> " + test);
-        boolean[] bool = encoder.encode(test);
-        byte[] toSend = encoder.toBytes(bool);
-        boolean[] newBool = encoder.toBoolean(toSend);
-
-        for(boolean b : newBool)
-            Log.d("verify", "newBool-> " + String.valueOf(b));
-        for(boolean b : bool)
-            Log.d("verify", "bool-> " + String.valueOf(b));
-
-        String output = encoder.decode(newBool);
-        Log.d("final", "after-> " + output);
-        */
-
-        //String word = "angel";
-        //bits = encoder.encode(word);
-        //Log.d("encoder", encoder.decode(bits));
-        //word = "martin";
-        //bits = encoder.encode(word);
-        //Log.d("encoder", encoder.decode(bits));
+        receiveData();
     }
 
     public void sendData(View v)
@@ -104,9 +82,18 @@ public class Game extends Activity
             EditText textView = (EditText) findViewById(R.id.sample);
             Log.d("string1", "test");
             String sending = textView.getText().toString();
-            Log.d("string1", sending.getBytes("UTF-8").toString());
-            Log.d("string1", sending);
-            out.write(sending.getBytes("UTF-8"));
+            boolean[] temp = encoder.encode(sending);
+
+            String outSend = "";
+            for(boolean b: temp)
+            {
+                if(b)
+                    outSend += "1";
+                else
+                    outSend += "0";
+            }
+            Log.d("string1", "booleanString-> " + outSend);
+            out.write(outSend.getBytes());
         }
         catch (Exception e)
         {
@@ -114,7 +101,7 @@ public class Game extends Activity
         }
     }
 
-    public void receiveData(View v)
+    public void receiveData()
     {
         if(!helper.status())
         {
@@ -126,7 +113,6 @@ public class Game extends Activity
             helper.execute();
         }
     }
-
     public void dealDamage(String word)
     {
         boolean timeBonus = true;
@@ -158,5 +144,27 @@ public class Game extends Activity
                 timeView.setText("Done.");
             }
         }.start();
+    }
+
+    public void fixString(View v)
+    {
+        TextView textView = (TextView)findViewById(R.id.testing);
+        Log.d("fix1", textView.getText().toString());
+        boolean[] temp = new boolean[textView.getText().length()];
+        int i = 0;
+        for(char c: textView.getText().toString().toCharArray())
+        {
+            if(c == '1')
+            {
+                temp[i++] = true;
+            }
+            else
+                temp[i++] = false;
+        }
+
+        Log.d("fix", encoder.decode(temp));
+        textView.setText("");
+        textView = (TextView)findViewById(R.id.sample);
+        textView.setHint(encoder.decode(temp));
     }
 }

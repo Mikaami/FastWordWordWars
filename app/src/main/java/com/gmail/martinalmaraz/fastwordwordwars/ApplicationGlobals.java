@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothSocket;
 public class ApplicationGlobals extends Application {
 
     public static BluetoothSocket mmSocket;
+    public static Encoder encoder;
 
     public static BluetoothSocket getMmSocket()
     {
@@ -18,5 +19,16 @@ public class ApplicationGlobals extends Application {
     {
         this.mmSocket = socket;
     }
+
+    public static Encoder getEncoder()
+    {
+        return encoder;
+    }
+
+    public void setEncoder(Encoder encoder)
+    {
+        this.encoder = encoder;
+    }
+
 
 }

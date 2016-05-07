@@ -22,11 +22,13 @@ public class Encoder
     public Node root;
     public HashMap<String, String> keys = new HashMap<>();
 
+
     public Encoder(InputStream file) throws IOException
     {
         //Takes in a file of words to create a huffman tree
         /*It will count the characters in the file and use that to
         * determine the weight of the tree. */
+
         String word;
         char[] holder;
         //It holds each character based on its position in the alphabet
@@ -193,6 +195,11 @@ public class Encoder
         for(char c : alpha)
         {
             String values = keys.get(String.valueOf(c));
+            if(values == null)
+            {
+                Log.d("convert", "null values from -> " + String.valueOf(c));
+                continue;
+            }
             Log.d("convert", String.valueOf(c));
             Log.d("convert", Integer.toString(keys.size()));
             if(values == null)
