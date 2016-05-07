@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.bluetooth.BluetoothSocket;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import java.lang.Object;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -18,6 +21,8 @@ public class Game extends Activity
 {
     private final int SENDING = 1;
     private final int RECIEVING = 2;
+    public int health;
+    public int enemyHealth;
     BlueToothHelper helper = new BlueToothHelper(this);
     BluetoothSocket socket = ((ApplicationGlobals)this.getApplication()).getMmSocket();
     OutputStream out;
@@ -29,6 +34,8 @@ public class Game extends Activity
         setContentView(R.layout.game);
         //Sets up encoder. Handles it in a seperate thread
         Log.d("encoder", "before");
+        health = 100;
+        enemyHealth = 100;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -50,6 +57,7 @@ public class Game extends Activity
             }
         }).start();
         Log.d("encoder", "after");
+        startTimer();
 
     }
 
@@ -117,5 +125,38 @@ public class Game extends Activity
             helper.cancel(true);
             helper.execute();
         }
+    }
+
+    public void dealDamage(String word)
+    {
+        boolean timeBonus = true;
+        if(timeBonus)
+        {
+            health += word.length() - 3;
+            enemyHealth -= word.length();
+        }
+        else
+        {
+            enemyHealth -= word.length();
+        }
+    }
+
+    public void startTimer()
+    {
+        new CountDownTimer(15000, 1000)
+        {
+            public void onTick(long millisUntilFinished)
+            {
+                //settext field to seconds remainding
+                TextView timeView = (TextView) findViewById(R.id.time);
+                timeView.setText("Time: " + millisUntilFinished/1000);
+            }
+            public void onFinish()
+            {
+                // setText to done
+                TextView timeView = (TextView) findViewById(R.id.time);
+                timeView.setText("Done.");
+            }
+        }.start();
     }
 }
