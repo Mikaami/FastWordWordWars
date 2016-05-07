@@ -24,10 +24,13 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
     private OutputStream out;
     private boolean isRunning;
     private Encoder encoder = Encoder.getInstance();
+    private Game game;
 
 
     public BlueToothHelper(Activity activity)
     {
+        game = (Game)activity;
+
         mmSocket = ((ApplicationGlobals)activity.getApplication()).getMmSocket();
         //btManager = new manageConnection(mmSocket);
         parent = activity;
@@ -107,8 +110,7 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
             {
                 // other stuff
                 Log.d("info", "was 50, stopped");
-                parent.findViewById(R.id.send).setEnabled(true);
-                parent.findViewById(R.id.TextField).setEnabled(true);
+                game.enableButtons();
                 cont = false;
                 String temp = textView.getText().toString();
                 if(temp.length() > 0)
@@ -130,7 +132,13 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
                     textView = (TextView)parent.findViewById(R.id.Recent);
                     textView.setText(encoder.decode(t));
                     textView = (TextView) parent.findViewById(R.id.testing);
+                    Log.d("HELP", textView.getText().toString());
                     textView.setText(""); // set binary textview to empty
+
+                    textView = (TextView)parent.findViewById(R.id.Recent);
+                    game.takeDamage(textView.getText().toString());
+                    game.startTimer();
+
                     //textView = (TextView) parent.findViewById(R.id.TextField);
                 }
 

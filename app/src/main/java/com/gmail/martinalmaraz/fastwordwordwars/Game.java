@@ -6,13 +6,12 @@ import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -33,6 +32,8 @@ public class Game extends Activity
     Encoder encoder;
     FastDictionary dic;
     String END_TURN = "52";
+    private CountDownTimer timer;
+    public Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,43 +54,24 @@ public class Game extends Activity
         try {
             Log.d("encoder", "start fastDic");
             dic = new FastDictionary(getAssets().open("words"));
-            enableButtons();
+            //enableButtons();
 
             Log.d("encoder", "end fastDic");
         }catch (IOException e)
         {
             Log.d("file", "unable to open file", e);
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                AssetManager assetManager = getAssets();
-                try {
-                    Log.d("encoder", "start");
-                    Encoder.setFile(assetManager.open("words"));
-                    encoder = Encoder.getInstance();
-                    //enableButtons();
 
-                    Log.d("encoder", "end");
-                }catch (IOException e)
-                {
-                    Log.d("file", "unable to open file", e);
-                }
-                if(encoder != null)
-                {
-                  Log.d("encoder", "success");
-                }
-                else
-                    Log.d("encoder", "is null");
-            }
-        }).start();
+        new Thread(new Task()).start();
+
+        //encoder = Encoder.getInstance();
         Log.d("encoder", "after");
 
         if((int)getIntent().getExtras().get("turn") == SENDING)
         {
             isTurn = true;
             enableButtons();
-            startTimer();
+            //startTimer();
         }
 
         else if((int)getIntent().getExtras().get("turn") == RECIEVING)
@@ -123,6 +105,8 @@ public class Game extends Activity
 
     public void sendData(String code)
     {
+        if(timer != null)
+            timer.cancel();
         try
         {
             out = socket.getOutputStream();
@@ -137,6 +121,8 @@ public class Game extends Activity
 
     public void sendData(View v)
     {
+        if(timer != null)
+            timer.cancel();
         try
         {
             Log.d("string1", "test");
@@ -219,7 +205,7 @@ public class Game extends Activity
 
     public void startTimer()
     {
-        new CountDownTimer(15000, 1000)
+        timer = new CountDownTimer(15000, 1000)
         {
             public void onTick(long millisUntilFinished)
             {
@@ -238,7 +224,10 @@ public class Game extends Activity
                 disableButtons();
                 Log.d("50", "after");
             }
-        }.start();
+        };
+
+        timer.start();
+
     }
 
     public void fixString(View v)
@@ -268,6 +257,7 @@ public class Game extends Activity
         if(health <= 0)
         {
             //player loses
+            timer.cancel();
             TextView view = (TextView) findViewById(R.id.time);
             view.setText("You Lose");
         }
@@ -276,6 +266,37 @@ public class Game extends Activity
             //player wins
             TextView view = (TextView) findViewById(R.id.time);
             view.setText("You Win!!");
+        }
+    }
+
+    class Task implements Runnable {
+        @Override
+        public void run()
+        {
+            AssetManager assetManager = getAssets();
+            try {
+                Log.d("encoder", "start");
+                Encoder.setFile(assetManager.open("words"));
+                encoder = Encoder.getInstance();
+                //startTimer();
+                //enableButtons();
+
+                Log.d("encoder", "end");
+            }catch (IOException e)
+            {
+                Log.d("file", "unable to open file", e);
+            }
+
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if((int)getIntent().getExtras().get("turn") == SENDING)
+                    {
+                        startTimer();
+                        enableButtons();
+                    }
+                }
+            });
         }
     }
 }
