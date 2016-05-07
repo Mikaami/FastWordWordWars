@@ -130,7 +130,9 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
                     textView = (TextView)parent.findViewById(R.id.scroll);
                     textView.setText(textView.getText() + "\n" + encoder.decode(t));
                     textView = (TextView) parent.findViewById(R.id.testing);
-                    textView.setText(encoder.decode(t).charAt(encoder.decode(t).length() - 1)); // set text to last char of word
+                    textView.setText(""); // set binary textview to empty
+                    textView = (TextView) parent.findViewById(R.id.sample);
+                    textView.setText(encoder.decode(t).charAt(encoder.decode(t).length() - 1));
                 }
 
                 //return;

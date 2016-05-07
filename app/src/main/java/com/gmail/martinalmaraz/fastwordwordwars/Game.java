@@ -30,7 +30,6 @@ public class Game extends Activity
     OutputStream out;
     Encoder encoder;
     FastDictionary dic;
-    private char mostRecentChar;
     String END_TURN = "52";
 
     @Override
@@ -39,22 +38,15 @@ public class Game extends Activity
         Log.d("encoder", "wtf");
         setContentView(R.layout.game);
 
-        if((int)getIntent().getExtras().get("turn") == SENDING)
-        {
-            isTurn = true;
-            //enableButtons();
-        }
-
-        else if((int)getIntent().getExtras().get("turn") == RECIEVING)
-        {
-            isTurn = false;
-            //disableButtons();
-        }
-
         //Sets up encoder. Handles it in a seperate thread
         Log.d("encoder", "before");
         health = 100;
         enemyHealth = 100;
+
+        TextView textView = (TextView)findViewById(R.id.textView);
+        textView.setText("Enemy Health: " + enemyHealth);
+        textView = (TextView)findViewById(R.id.textView2);
+        textView.setText("Health: " + health);
         disableButtons();
         try {
             Log.d("encoder", "start fastDic");
@@ -74,7 +66,7 @@ public class Game extends Activity
                     Log.d("encoder", "start");
                     Encoder.setFile(assetManager.open("words"));
                     encoder = Encoder.getInstance();
-                    enableButtons();
+                    //enableButtons();
 
                     Log.d("encoder", "end");
                 }catch (IOException e)
@@ -90,7 +82,21 @@ public class Game extends Activity
             }
         }).start();
         Log.d("encoder", "after");
-        startTimer();
+
+        if((int)getIntent().getExtras().get("turn") == SENDING)
+        {
+            isTurn = true;
+            enableButtons();
+            startTimer();
+        }
+
+        else if((int)getIntent().getExtras().get("turn") == RECIEVING)
+        {
+            isTurn = false;
+            disableButtons();
+        }
+
+
         receiveData();
     }
 
