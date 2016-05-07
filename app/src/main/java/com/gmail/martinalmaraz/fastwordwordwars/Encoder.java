@@ -21,7 +21,31 @@ public class Encoder
     public int[] freq;
     public Node root;
     public HashMap<String, String> keys = new HashMap<>();
+    public static Encoder me = null;
+    public static InputStream file;
 
+
+    public static Encoder getInstance()
+    {
+        if(me == null)
+        {
+            try
+            {
+                me = new Encoder(file);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return me;
+
+    }
+
+    public static void setFile(InputStream file2)
+    {
+        file = file2;
+    }
 
     public Encoder(InputStream file) throws IOException
     {

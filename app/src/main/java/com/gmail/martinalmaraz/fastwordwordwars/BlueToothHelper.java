@@ -23,6 +23,7 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
     private InputStream in;
     private OutputStream out;
     private boolean isRunning;
+    private Encoder encoder = Encoder.getInstance();
 
 
     public BlueToothHelper(Activity activity)
@@ -56,9 +57,15 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
             while (read != -1)
             {
                 publishProgress(read);
+                if(read == -1)
+                {
+                    read = in.read();
+                }
                 read = in.read();
                 Log.d("inputstream", String.valueOf((char)read));
             }
+
+            Log.d("stream", "read ->" + String.valueOf(read));
         }
         catch (Exception e)
         {
@@ -74,8 +81,10 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
     {
         try
         {
-            mmSocket.close();
-            isRunning = false;
+            //mmSocket.close();
+            //isRunning = false;
+            //((Game)parent).enableButtons();
+
             Log.d("closing", "closed");
         }
         catch (Exception e)
@@ -88,11 +97,44 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
     {
         TextView textView = (TextView) parent.findViewById(R.id.testing);
         String out = "";
+        boolean cont = true;
         try{
             if(String.valueOf(Integer.toString(progress[0])).equals("49"))
                 out += "1";
-            else
+            else if(String.valueOf(Integer.toString(progress[0])).equals("48"))
                 out += "0";
+            else if(String.valueOf(Integer.toString(progress[0])).equals("50"))
+            {
+                // other stuff
+                Log.d("info", "was 50, stopped");
+                parent.findViewById(R.id.send).setEnabled(true);
+                parent.findViewById(R.id.sample).setEnabled(true);
+                cont = false;
+                String temp = textView.getText().toString();
+                if(temp.length() > 0)
+                {
+                    boolean[] t = new boolean[temp.length()];
+                    int j = 0;
+                    for(char c : temp.toCharArray())
+                    {
+                        if(c == '1')
+                            t[j++] = true;
+                        else
+                            t[j++] = false;
+                    }
+                    if(encoder == null)
+                    {
+                        Log.d("ERR", "WHY NULL??");
+                        encoder = Encoder.getInstance();
+                    }
+                    textView = (TextView)parent.findViewById(R.id.scroll);
+                    textView.setText(textView.getText() + "\n" + encoder.decode(t));
+                    textView = (TextView) parent.findViewById(R.id.testing);
+                    textView.setText(encoder.decode(t).charAt(encoder.decode(t).length() - 1)); // set text to last char of word
+                }
+
+                //return;
+            }
             Log.d("update", String.valueOf(Integer.toString(progress[0])));
         }
         catch (Exception e)
@@ -101,19 +143,23 @@ public class BlueToothHelper extends AsyncTask<Void, Integer, Long> {
         }
         Log.d("string", out );
 
-        boolean[] temp = new boolean[out.length()];
-
-        int i = 0;
-        for(char c : out.toCharArray())
+        if(cont)
         {
-            if(c == '1')
-                temp[i++] = true;
-            else
-                temp[i++] = false;
+            boolean[] temp = new boolean[out.length()];
+
+            int i = 0;
+            for(char c : out.toCharArray())
+            {
+                if(c == '1')
+                    temp[i++] = true;
+                else
+                    temp[i++] = false;
+            }
+            out = textView.getText() + out;
+            textView.setText(out);
+            Log.d("codec", "out-> " + out);
         }
-        out = textView.getText() + out;
-        textView.setText(out);
-        Log.d("codec", "out-> " + out);
+
 
     }
 

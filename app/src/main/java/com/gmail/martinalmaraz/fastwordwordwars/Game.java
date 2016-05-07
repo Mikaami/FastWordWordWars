@@ -3,10 +3,12 @@ package com.gmail.martinalmaraz.fastwordwordwars;
 import android.app.Activity;
 import android.bluetooth.BluetoothSocket;
 import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -27,6 +29,10 @@ public class Game extends Activity
     BluetoothSocket socket = ((ApplicationGlobals)this.getApplication()).getMmSocket();
     OutputStream out;
     Encoder encoder;
+    FastDictionary dic;
+    private char mostRecentChar;
+    String END_TURN = "52";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,24 +42,40 @@ public class Game extends Activity
         if((int)getIntent().getExtras().get("turn") == SENDING)
         {
             isTurn = true;
+            //enableButtons();
         }
 
         else if((int)getIntent().getExtras().get("turn") == RECIEVING)
         {
             isTurn = false;
+            //disableButtons();
         }
 
         //Sets up encoder. Handles it in a seperate thread
         Log.d("encoder", "before");
         health = 100;
         enemyHealth = 100;
+        disableButtons();
+        try {
+            Log.d("encoder", "start fastDic");
+            dic = new FastDictionary(getAssets().open("words"));
+            enableButtons();
+
+            Log.d("encoder", "end fastDic");
+        }catch (IOException e)
+        {
+            Log.d("file", "unable to open file", e);
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
                 AssetManager assetManager = getAssets();
                 try {
                     Log.d("encoder", "start");
-                    encoder = new Encoder(assetManager.open("words"));
+                    Encoder.setFile(assetManager.open("words"));
+                    encoder = Encoder.getInstance();
+                    enableButtons();
+
                     Log.d("encoder", "end");
                 }catch (IOException e)
                 {
@@ -72,6 +94,39 @@ public class Game extends Activity
         receiveData();
     }
 
+    public void disableButtons()
+    {
+        ((Button)findViewById(R.id.send)).setEnabled(false);
+        ((Button)findViewById(R.id.fix)).setEnabled(false);
+        ((EditText)findViewById(R.id.sample)).setEnabled(false);
+    }
+
+    public void enableButtons()
+    {
+        ((Button)findViewById(R.id.send)).setEnabled(true);
+        ((Button)findViewById(R.id.fix)).setEnabled(true);
+        ((EditText)findViewById(R.id.sample)).setEnabled(true);
+    }
+
+    public void clearText()
+    {
+        ((TextView)findViewById(R.id.sample)).setText("");
+    }
+
+    public void sendData(String code)
+    {
+        try
+        {
+            out = socket.getOutputStream();
+            out.write(code.getBytes());
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void sendData(View v)
     {
         try
@@ -82,6 +137,20 @@ public class Game extends Activity
             EditText textView = (EditText) findViewById(R.id.sample);
             Log.d("string1", "test");
             String sending = textView.getText().toString();
+
+            // check if that is a legal word //
+            if(!dic.isWord(sending))
+            {
+                ((EditText) findViewById(R.id.sample)).setHighlightColor(Color.RED);
+                return;
+            }
+            else
+            {
+                // can deal damage
+                dealDamage(sending);
+            }
+
+
             boolean[] temp = encoder.encode(sending);
 
             String outSend = "";
@@ -94,11 +163,20 @@ public class Game extends Activity
             }
             Log.d("string1", "booleanString-> " + outSend);
             out.write(outSend.getBytes());
+            sendData(END_TURN);
+            disableButtons();
+            //out.write("-1".getBytes()); // send -1 to stop
         }
         catch (Exception e)
         {
             Log.d("game", "failed to get write socket", e);
         }
+
+    }
+
+    public void reInit(View view)
+    {
+        enableButtons();
     }
 
     public void receiveData()
@@ -115,16 +193,12 @@ public class Game extends Activity
     }
     public void dealDamage(String word)
     {
-        boolean timeBonus = true;
-        if(timeBonus)
-        {
-            health += word.length() - 3;
-            enemyHealth -= word.length();
-        }
-        else
-        {
-            enemyHealth -= word.length();
-        }
+        enemyHealth -= word.length();
+    }
+
+    public void takeDamage(String word)
+    {
+        health -= word.length();
     }
 
     public void startTimer()
@@ -141,7 +215,12 @@ public class Game extends Activity
             {
                 // setText to done
                 TextView timeView = (TextView) findViewById(R.id.time);
-                timeView.setText("Done.");
+                timeView.setText("TURN OVER");
+                clearText();
+                Log.d("50", "here");
+                sendData(END_TURN);
+                disableButtons();
+                Log.d("50", "after");
             }
         }.start();
     }
@@ -166,5 +245,6 @@ public class Game extends Activity
         textView.setText("");
         textView = (TextView)findViewById(R.id.sample);
         textView.setHint(encoder.decode(temp));
+        takeDamage(encoder.decode(temp));
     }
 }

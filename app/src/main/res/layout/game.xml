@@ -48,14 +48,13 @@
         android:layout_height="wrap_content"
         android:text="send"
         android:onClick="sendData"
-        android:id="@+id/button4"
-        android:layout_above="@+id/button3"
+        android:id="@+id/send"
+        android:layout_above="@+id/fix"
         android:layout_toEndOf="@+id/sample" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="here"
         android:id="@+id/testing"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/textView2"
@@ -65,10 +64,16 @@
         android:layout_height="wrap_content"
         android:text="fix"
         android:onClick="fixString"
-        android:id="@+id/button3"
+        android:id="@+id/fix"
         android:layout_marginTop="22dp"
         android:layout_below="@+id/sample"
         android:layout_alignStart="@+id/sample" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="reInit"
+        android:layout_alignTop="@+id/TEXT_STATUS_ID"
+        android:layout_alignStart="@+id/time" />
 
     <ScrollView
         android:id="@+id/SCROLLER_ID"
@@ -77,6 +82,11 @@
         android:scrollbars="vertical"
         android:fillViewport="true">
 
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/scroll"/>
+
     </ScrollView>
 
     <TextView
@@ -84,7 +94,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
-        android:layout_below="@+id/button3"
+        android:layout_below="@+id/fix"
         android:layout_alignParentEnd="true"
         android:layout_above="@+id/testing" />
 </RelativeLayout>
