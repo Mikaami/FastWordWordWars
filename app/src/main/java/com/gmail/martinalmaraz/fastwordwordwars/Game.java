@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashSet;
 
 /**
  * Created by kami on 5/4/2016.
@@ -34,6 +35,7 @@ public class Game extends Activity
     String END_TURN = "52";
     private CountDownTimer timer;
     public Handler handler = new Handler();
+    public HashSet<String> used = new HashSet<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +135,7 @@ public class Game extends Activity
             String sending = textView.getText().toString();
 
             // check if that is a legal word //
-            if(!dic.isWord(sending))
+            if(!dic.isWord(sending) || used.contains(sending))
             {
                 ((EditText) findViewById(R.id.TextField)).setHighlightColor(Color.RED);
                 return;
@@ -142,6 +144,7 @@ public class Game extends Activity
             {
                 // can deal damage
                 dealDamage(sending);
+                used.add(sending);
             }
 
 
